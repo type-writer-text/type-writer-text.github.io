@@ -79,13 +79,16 @@ class TypeWriterText extends HTMLElement {
     
     switch (name) {
       case 'speed':
-        this._speed = parseFloat(newValue) || 1;
+        const speed = parseFloat(newValue);
+        this._speed = (speed > 0) ? speed : 1;
         break;
       case 'min-duration':
-        this._minDuration = parseFloat(newValue) || 0;
+        const minDuration = parseFloat(newValue);
+        this._minDuration = (minDuration >= 0) ? minDuration : 0;
         break;
       case 'max-duration':
-        this._maxDuration = parseFloat(newValue) || Infinity;
+        const maxDuration = parseFloat(newValue);
+        this._maxDuration = (maxDuration >= 0) ? maxDuration : Infinity;
         break;
     }
   }
@@ -280,6 +283,9 @@ class TypeWriterText extends HTMLElement {
   /**
    * Set new text content
    * @param {string} content - HTML content to display
+   * @security WARNING: This method accepts HTML content without sanitization.
+   *                    Only pass trusted content. If using user-provided content,
+   *                    sanitize it first to prevent XSS attacks.
    */
   setText(content) {
     this._cancelAnimation();
@@ -390,6 +396,7 @@ class TypeWriterText extends HTMLElement {
     
     // Resume if was playing
     if (wasPlaying) {
+      this._isPaused = false;
       this._animationFrame = requestAnimationFrame((ts) => this._animate(ts));
     }
   }

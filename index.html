@@ -502,6 +502,8 @@
     });
     
     // setText demo
+    // NOTE: This demo passes user input directly to setText for demonstration purposes.
+    // In production, sanitize user input to prevent XSS attacks.
     function updateText() {
       const newText = document.getElementById('new-text').value;
       const demo = document.getElementById('settext-demo');
