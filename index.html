@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&lt;type-writer-text> Web Component Demo</title>
+  <script src="type-writer-text.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 0.5rem;
+    }
+    
+    h2 {
+      color: #34495e;
+      margin-top: 2rem;
+    }
+    
+    .example {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #f9f9f9;
+    }
+    
+    .example h3 {
+      margin-top: 0;
+      color: #2980b9;
+    }
+    
+    .demo-area {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+      min-height: 80px;
+      border: 2px solid #ecf0f1;
+    }
+    
+    type-writer-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+    
+    .controls {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background: #3498db;
+      color: white;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    
+    button:hover {
+      background: #2980b9;
+    }
+    
+    button:active {
+      background: #21618c;
+    }
+    
+    button:disabled {
+      background: #bdc3c7;
+      cursor: not-allowed;
+    }
+    
+    .event-log {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #2c3e50;
+      color: #ecf0f1;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .event-log-item {
+      padding: 0.25rem 0;
+      border-bottom: 1px solid #34495e;
+    }
+    
+    .event-log-item:last-child {
+      border-bottom: none;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #ecf0f1;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3498db, #2ecc71);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+    
+    .slider-control {
+      margin: 1rem 0;
+    }
+    
+    .slider-control label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    input[type="range"] {
+      width: 100%;
+      max-width: 400px;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      margin: 0.5rem 0;
+    }
+    
+    code {
+      background: #f4f4f4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .rtl-demo {
+      direction: rtl;
+      text-align: right;
+    }
+    
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    
+    .feature-card {
+      padding: 1rem;
+      background: white;
+      border-left: 4px solid #3498db;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .feature-card h3 {
+      margin-top: 0;
+      color: #2980b9;
+      font-size: 1rem;
+    }
+    
+    .feature-card p {
+      margin: 0.5rem 0 0 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>&lt;type-writer-text> Web Component</h1>
+  
+  <p>A customizable typewriter effect component that preserves HTML structure and supports advanced features.</p>
+  
+  <div class="feature-list">
+    <div class="feature-card">
+      <h3>✨ HTML Support</h3>
+      <p>Preserves tags including emphasis, links, code, and nested structures</p>
+    </div>
+    <div class="feature-card">
+      <h3>🌐 Bidirectional Text</h3>
+      <p>Supports both LTR and RTL text rendering</p>
+    </div>
+    <div class="feature-card">
+      <h3>🎮 Playback Control</h3>
+      <p>Methods for start, pause, resume, complete, and reset</p>
+    </div>
+    <div class="feature-card">
+      <h3>📊 Progress Events</h3>
+      <p>Track animation progress with detailed events</p>
+    </div>
+    <div class="feature-card">
+      <h3>♿ Accessibility</h3>
+      <p>ARIA live regions and reduced motion support</p>
+    </div>
+    <div class="feature-card">
+      <h3>⚙️ Configurable</h3>
+      <p>Speed, min-duration, and max-duration attributes</p>
+    </div>
+  </div>
+
+  <h2>Examples</h2>
+
+  <!-- Example 1: Basic HTML Support -->
+  <div class="example">
+    <h3>1. HTML Support</h3>
+    <p>The component preserves HTML tags including emphasis, links, and code.</p>
+    <div class="demo-area">
+      <type-writer-text id="html-demo" speed="2">
+        This text has <strong>bold</strong>, <em>italic</em>, and <code>code</code> elements. 
+        It also supports <a href="https://github.com">links</a> and <mark>highlighted text</mark>!
+      </type-writer-text>
+    </div>
+    <div class="controls">
+      <button onclick="document.getElementById('html-demo').start()">Start</button>
+      <button onclick="document.getElementById('html-demo').pause()">Pause</button>
+      <button onclick="document.getElementById('html-demo').resume()">Resume</button>
+      <button onclick="document.getElementById('html-demo').complete()">Complete</button>
+      <button onclick="document.getElementById('html-demo').reset()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Example 2: Speed Control -->
+  <div class="example">
+    <h3>2. Speed Control</h3>
+    <p>Adjust the typing speed dynamically.</p>
+    <div class="demo-area">
+      <type-writer-text id="speed-demo" speed="1">
+        The quick brown fox jumps over the lazy dog. This text demonstrates variable typing speed!
+      </type-writer-text>
+    </div>
+    <div class="slider-control">
+      <label for="speed-slider">Speed: <span id="speed-value">1</span>x</label>
+      <input type="range" id="speed-slider" min="0.5" max="5" step="0.5" value="1">
+    </div>
+    <div class="controls">
+      <button onclick="document.getElementById('speed-demo').start()">Start</button>
+      <button onclick="document.getElementById('speed-demo').reset()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Example 3: Duration Constraints -->
+  <div class="example">
+    <h3>3. Duration Constraints</h3>
+    <p>Set minimum and maximum duration for the animation.</p>
+    <div class="demo-area">
+      <type-writer-text id="duration-demo" min-duration="2000" max-duration="5000">
+        This animation will complete between 2 and 5 seconds, regardless of text length.
+      </type-writer-text>
+    </div>
+    <div class="controls">
+      <button onclick="document.getElementById('duration-demo').start()">Start</button>
+      <button onclick="document.getElementById('duration-demo').reset()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Example 4: Progress Tracking -->
+  <div class="example">
+    <h3>4. Progress Tracking</h3>
+    <p>Monitor animation progress with events.</p>
+    <div class="demo-area">
+      <type-writer-text id="progress-demo" speed="2">
+        Watch the progress bar below as this text types out. The progress event fires for each character!
+      </type-writer-text>
+    </div>
+    <div class="progress-bar">
+      <div id="progress-fill" class="progress-fill"></div>
+    </div>
+    <div class="controls">
+      <button onclick="document.getElementById('progress-demo').start()">Start</button>
+      <button onclick="document.getElementById('progress-demo').reset()">Reset</button>
+    </div>
+    <div class="event-log" id="progress-log"></div>
+  </div>
+
+  <!-- Example 5: Seek Control -->
+  <div class="example">
+    <h3>5. Seek Control</h3>
+    <p>Jump to any position in the animation.</p>
+    <div class="demo-area">
+      <type-writer-text id="seek-demo">
+        This demonstrates the seek functionality. Use the slider below to jump to any position in the text!
+      </type-writer-text>
+    </div>
+    <div class="slider-control">
+      <label for="seek-slider">Position: <span id="seek-value">0</span>%</label>
+      <input type="range" id="seek-slider" min="0" max="100" step="1" value="0">
+    </div>
+    <div class="controls">
+      <button onclick="document.getElementById('seek-demo').start()">Start</button>
+      <button onclick="document.getElementById('seek-demo').pause()">Pause</button>
+      <button onclick="document.getElementById('seek-demo').reset()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Example 6: setText Method -->
+  <div class="example">
+    <h3>6. Dynamic Content with setText()</h3>
+    <p>Change the content dynamically using the setText() method.</p>
+    <div class="demo-area">
+      <type-writer-text id="settext-demo" speed="3">
+        This is the initial text.
+      </type-writer-text>
+    </div>
+    <input type="text" id="new-text" placeholder="Enter new text (can include HTML)" 
+           value="New text with <strong>HTML</strong> support!">
+    <div class="controls">
+      <button onclick="updateText()">Set New Text</button>
+      <button onclick="document.getElementById('settext-demo').start()">Start</button>
+      <button onclick="document.getElementById('settext-demo').reset()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Example 7: Nested HTML -->
+  <div class="example">
+    <h3>7. Nested HTML Structures</h3>
+    <p>Complex nested HTML is fully supported.</p>
+    <div class="demo-area">
+      <type-writer-text id="nested-demo" speed="2">
+        <p>This contains <strong>nested <em>formatting</em> tags</strong>.</p>
+        <ul>
+          <li>First item</li>
+          <li>Second <code>item</code></li>
+        </ul>
+      </type-writer-text>
+    </div>
+    <div class="controls">
+      <button onclick="document.getElementById('nested-demo').start()">Start</button>
+      <button onclick="document.getElementById('nested-demo').reset()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Example 8: RTL Text Support -->
+  <div class="example">
+    <h3>8. Bidirectional Text (RTL)</h3>
+    <p>Right-to-left text is fully supported.</p>
+    <div class="demo-area rtl-demo">
+      <type-writer-text id="rtl-demo" speed="2" dir="rtl">
+        مرحبا بك! هذا نص عربي <strong>بتنسيق</strong> مختلف. يدعم المكون النصوص من اليمين إلى اليسار.
+      </type-writer-text>
+    </div>
+    <div class="controls">
+      <button onclick="document.getElementById('rtl-demo').start()">Start</button>
+      <button onclick="document.getElementById('rtl-demo').reset()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Example 9: Event Logging -->
+  <div class="example">
+    <h3>9. Event System</h3>
+    <p>All events: start, pause, resume, complete, reset, progress, seek</p>
+    <div class="demo-area">
+      <type-writer-text id="events-demo" speed="3">
+        Interact with the controls to see all the events fired by this component!
+      </type-writer-text>
+    </div>
+    <div class="controls">
+      <button onclick="document.getElementById('events-demo').start()">Start</button>
+      <button onclick="document.getElementById('events-demo').pause()">Pause</button>
+      <button onclick="document.getElementById('events-demo').resume()">Resume</button>
+      <button onclick="document.getElementById('events-demo').complete()">Complete</button>
+      <button onclick="document.getElementById('events-demo').reset()">Reset</button>
+      <button onclick="document.getElementById('events-demo').seek(0.5)">Seek 50%</button>
+    </div>
+    <div class="event-log" id="events-log"></div>
+  </div>
+
+  <!-- Example 10: Reduced Motion -->
+  <div class="example">
+    <h3>10. Accessibility - Reduced Motion</h3>
+    <p>Respects user's motion preferences when <code>respect-motion-preference</code> attribute is set.</p>
+    <div class="demo-area">
+      <type-writer-text id="motion-demo" speed="2" respect-motion-preference>
+        If you have "prefers-reduced-motion" enabled in your system, this text will appear instantly!
+      </type-writer-text>
+    </div>
+    <div class="controls">
+      <button onclick="document.getElementById('motion-demo').start()">Start</button>
+      <button onclick="document.getElementById('motion-demo').reset()">Reset</button>
+    </div>
+    <p><small>Note: This requires the system setting "Reduce motion" to be enabled.</small></p>
+  </div>
+
+  <h2>API Reference</h2>
+  
+  <div class="example">
+    <h3>Attributes</h3>
+    <ul>
+      <li><code>speed</code> - Animation speed multiplier (default: 1)</li>
+      <li><code>min-duration</code> - Minimum animation duration in milliseconds</li>
+      <li><code>max-duration</code> - Maximum animation duration in milliseconds</li>
+      <li><code>respect-motion-preference</code> - Skip animation if user prefers reduced motion</li>
+    </ul>
+    
+    <h3>Methods</h3>
+    <ul>
+      <li><code>start()</code> - Start the animation from the beginning</li>
+      <li><code>pause()</code> - Pause the animation</li>
+      <li><code>resume()</code> - Resume a paused animation</li>
+      <li><code>complete()</code> - Complete the animation immediately</li>
+      <li><code>reset()</code> - Reset to the beginning</li>
+      <li><code>seek(position)</code> - Jump to a position (0-1 or character index)</li>
+      <li><code>setText(content)</code> - Update the content</li>
+    </ul>
+    
+    <h3>Properties</h3>
+    <ul>
+      <li><code>isPlaying</code> - Boolean indicating if animation is playing</li>
+      <li><code>isPaused</code> - Boolean indicating if animation is paused</li>
+      <li><code>progress</code> - Current progress (0-1)</li>
+    </ul>
+    
+    <h3>Events</h3>
+    <ul>
+      <li><code>start</code> - Fired when animation starts</li>
+      <li><code>pause</code> - Fired when animation is paused</li>
+      <li><code>resume</code> - Fired when animation is resumed</li>
+      <li><code>complete</code> - Fired when animation completes</li>
+      <li><code>reset</code> - Fired when animation is reset</li>
+      <li><code>progress</code> - Fired for each character (includes detail: {current, total, progress})</li>
+      <li><code>seek</code> - Fired when seeking (includes detail: {position, progress})</li>
+    </ul>
+  </div>
+
+  <script>
+    // Speed control
+    const speedSlider = document.getElementById('speed-slider');
+    const speedValue = document.getElementById('speed-value');
+    const speedDemo = document.getElementById('speed-demo');
+    
+    speedSlider.addEventListener('input', (e) => {
+      const speed = e.target.value;
+      speedValue.textContent = speed;
+      speedDemo.setAttribute('speed', speed);
+    });
+    
+    // Progress tracking
+    const progressDemo = document.getElementById('progress-demo');
+    const progressFill = document.getElementById('progress-fill');
+    const progressLog = document.getElementById('progress-log');
+    
+    progressDemo.addEventListener('progress', (e) => {
+      progressFill.style.width = (e.detail.progress * 100) + '%';
+      
+      // Log every 10 characters to avoid spam
+      if (e.detail.current % 10 === 0 || e.detail.current === e.detail.total) {
+        addLogEntry(progressLog, `progress: ${e.detail.current}/${e.detail.total} (${(e.detail.progress * 100).toFixed(1)}%)`);
+      }
+    });
+    
+    progressDemo.addEventListener('start', () => {
+      progressLog.innerHTML = '';
+      addLogEntry(progressLog, 'start event fired');
+    });
+    
+    progressDemo.addEventListener('complete', () => {
+      addLogEntry(progressLog, 'complete event fired');
+    });
+    
+    progressDemo.addEventListener('reset', () => {
+      progressFill.style.width = '0%';
+      addLogEntry(progressLog, 'reset event fired');
+    });
+    
+    // Seek control
+    const seekSlider = document.getElementById('seek-slider');
+    const seekValue = document.getElementById('seek-value');
+    const seekDemo = document.getElementById('seek-demo');
+    
+    seekSlider.addEventListener('input', (e) => {
+      const position = e.target.value / 100;
+      seekValue.textContent = e.target.value;
+      seekDemo.seek(position);
+    });
+    
+    // Update seek slider when animation progresses
+    seekDemo.addEventListener('progress', (e) => {
+      seekSlider.value = e.detail.progress * 100;
+      seekValue.textContent = Math.round(e.detail.progress * 100);
+    });
+    
+    // setText demo
+    // NOTE: This demo passes user input directly to setText for demonstration purposes.
+    // In production, sanitize user input to prevent XSS attacks.
+    function updateText() {
+      const newText = document.getElementById('new-text').value;
+      const demo = document.getElementById('settext-demo');
+      demo.setText(newText);
+      demo.start();
+    }
+    
+    // Event logging
+    const eventsDemo = document.getElementById('events-demo');
+    const eventsLog = document.getElementById('events-log');
+    
+    ['start', 'pause', 'resume', 'complete', 'reset'].forEach(eventName => {
+      eventsDemo.addEventListener(eventName, () => {
+        addLogEntry(eventsLog, `${eventName} event fired`);
+      });
+    });
+    
+    eventsDemo.addEventListener('progress', (e) => {
+      if (e.detail.current % 10 === 0 || e.detail.current === e.detail.total) {
+        addLogEntry(eventsLog, `progress: ${(e.detail.progress * 100).toFixed(1)}%`);
+      }
+    });
+    
+    eventsDemo.addEventListener('seek', (e) => {
+      addLogEntry(eventsLog, `seek: position ${e.detail.position} (${(e.detail.progress * 100).toFixed(1)}%)`);
+    });
+    
+    // Helper function to add log entries
+    function addLogEntry(logElement, message) {
+      const timestamp = new Date().toLocaleTimeString();
+      const entry = document.createElement('div');
+      entry.className = 'event-log-item';
+      entry.textContent = `[${timestamp}] ${message}`;
+      logElement.appendChild(entry);
+      logElement.scrollTop = logElement.scrollHeight;
+      
+      // Keep only last 20 entries
+      while (logElement.children.length > 20) {
+        logElement.removeChild(logElement.firstChild);
+      }
+    }
+  </script>
+</body>
+</html>
