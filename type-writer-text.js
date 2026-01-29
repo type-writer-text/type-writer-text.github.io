@@ -417,3 +417,55 @@ class TypeWriterText extends HTMLElement {
 
 // Register the custom element
 customElements.define('type-writer-text', TypeWriterText);
+
+/**
+ * WriteExample Web Component
+ * Container for examples with title and demo area
+ */
+class WriteExample extends HTMLElement {
+  connectedCallback() {
+    const title = this.getAttribute('title') || '';
+    const description = this.getAttribute('description') || '';
+    
+    // Capture the original content before modifying innerHTML
+    const originalContent = this.innerHTML;
+    
+    this.innerHTML = `
+      <div style="margin: 2rem 0; padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
+        <h3 style="margin-top: 0; color: #2980b9;">${title}</h3>
+        ${description ? `<p>${description}</p>` : ''}
+        ${originalContent}
+      </div>
+    `;
+  }
+}
+
+customElements.define('write-example', WriteExample);
+
+/**
+ * SliderControl Web Component
+ * Reusable slider control with label
+ */
+class SliderControl extends HTMLElement {
+  connectedCallback() {
+    const label = this.getAttribute('label') || '';
+    const id = this.getAttribute('control-id') || '';
+    const min = this.getAttribute('min') || '0';
+    const max = this.getAttribute('max') || '100';
+    const step = this.getAttribute('step') || '1';
+    const value = this.getAttribute('value') || '0';
+    const unit = this.getAttribute('unit') || '';
+    
+    this.innerHTML = `
+      <div style="margin: 1rem 0;">
+        <label for="${id}" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+          ${label}: <span id="${id}-value">${value}</span>${unit}
+        </label>
+        <input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${value}" 
+               style="width: 100%; max-width: 400px;">
+      </div>
+    `;
+  }
+}
+
+customElements.define('slider-control', SliderControl);

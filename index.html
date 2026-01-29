@@ -194,6 +194,41 @@
   
   <p>A customizable typewriter effect component that preserves HTML structure and supports advanced features.</p>
   
+  <!-- Interactive Demo Textarea -->
+  <div style="margin: 2rem 0; padding: 1.5rem; border: 2px solid #3498db; border-radius: 8px; background: white;">
+    <h2 style="margin-top: 0; color: #2c3e50;">Interactive Demo</h2>
+    <!-- NOTE: This demo passes user input directly to setText for demonstration purposes.
+         In production, sanitize user input to prevent XSS attacks. -->
+    <textarea id="demo-textarea" rows="3" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; font-family: inherit; resize: vertical;">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</textarea>
+    
+    <div class="demo-area">
+      <type-writer-text id="interactive-demo" speed="2">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+      </type-writer-text>
+    </div>
+    
+    <!-- Controls on two lines -->
+    <div style="margin-top: 1rem;">
+      <div class="controls" style="margin-bottom: 0.5rem;">
+        <button onclick="document.getElementById('interactive-demo').start()">Start</button>
+        <button onclick="document.getElementById('interactive-demo').pause()">Pause</button>
+        <button onclick="document.getElementById('interactive-demo').resume()">Resume</button>
+        <button onclick="document.getElementById('interactive-demo').complete()">Complete</button>
+        <button onclick="document.getElementById('interactive-demo').reset()">Reset</button>
+        <button onclick="updateDemoText()">Update from Textarea</button>
+      </div>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+        <input type="text" id="demo-title" placeholder="Title" value="Interactive Demo" style="flex: 0 0 auto; width: 200px; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+        <span style="color: #666;">-</span>
+        <input type="text" id="demo-description" placeholder="Description" value="Edit textarea and click Update" style="flex: 1; min-width: 250px; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+      </div>
+    </div>
+  </div>
+  
   <div class="feature-list">
     <div class="feature-card">
       <h3>✨ HTML Support</h3>
@@ -224,9 +259,7 @@
   <h2>Examples</h2>
 
   <!-- Example 1: Basic HTML Support -->
-  <div class="example">
-    <h3>1. HTML Support</h3>
-    <p>The component preserves HTML tags including emphasis, links, and code.</p>
+  <write-example title="1. HTML Support" description="The component preserves HTML tags including emphasis, links, and code.">
     <div class="demo-area">
       <type-writer-text id="html-demo" speed="2">
         This text has <strong>bold</strong>, <em>italic</em>, and <code>code</code> elements. 
@@ -240,31 +273,24 @@
       <button onclick="document.getElementById('html-demo').complete()">Complete</button>
       <button onclick="document.getElementById('html-demo').reset()">Reset</button>
     </div>
-  </div>
+  </write-example>
 
   <!-- Example 2: Speed Control -->
-  <div class="example">
-    <h3>2. Speed Control</h3>
-    <p>Adjust the typing speed dynamically.</p>
+  <write-example title="2. Speed Control" description="Adjust the typing speed dynamically.">
     <div class="demo-area">
       <type-writer-text id="speed-demo" speed="1">
         The quick brown fox jumps over the lazy dog. This text demonstrates variable typing speed!
       </type-writer-text>
     </div>
-    <div class="slider-control">
-      <label for="speed-slider">Speed: <span id="speed-value">1</span>x</label>
-      <input type="range" id="speed-slider" min="0.5" max="5" step="0.5" value="1">
-    </div>
+    <slider-control label="Speed" control-id="speed-slider" min="0.5" max="5" step="0.5" value="1" unit="x"></slider-control>
     <div class="controls">
       <button onclick="document.getElementById('speed-demo').start()">Start</button>
       <button onclick="document.getElementById('speed-demo').reset()">Reset</button>
     </div>
-  </div>
+  </write-example>
 
   <!-- Example 3: Duration Constraints -->
-  <div class="example">
-    <h3>3. Duration Constraints</h3>
-    <p>Set minimum and maximum duration for the animation.</p>
+  <write-example title="3. Duration Constraints" description="Set minimum and maximum duration for the animation.">
     <div class="demo-area">
       <type-writer-text id="duration-demo" min-duration="2000" max-duration="5000">
         This animation will complete between 2 and 5 seconds, regardless of text length.
@@ -274,12 +300,10 @@
       <button onclick="document.getElementById('duration-demo').start()">Start</button>
       <button onclick="document.getElementById('duration-demo').reset()">Reset</button>
     </div>
-  </div>
+  </write-example>
 
   <!-- Example 4: Progress Tracking -->
-  <div class="example">
-    <h3>4. Progress Tracking</h3>
-    <p>Monitor animation progress with events.</p>
+  <write-example title="4. Progress Tracking" description="Monitor animation progress with events.">
     <div class="demo-area">
       <type-writer-text id="progress-demo" speed="2">
         Watch the progress bar below as this text types out. The progress event fires for each character!
@@ -293,32 +317,25 @@
       <button onclick="document.getElementById('progress-demo').reset()">Reset</button>
     </div>
     <div class="event-log" id="progress-log"></div>
-  </div>
+  </write-example>
 
   <!-- Example 5: Seek Control -->
-  <div class="example">
-    <h3>5. Seek Control</h3>
-    <p>Jump to any position in the animation.</p>
+  <write-example title="5. Seek Control" description="Jump to any position in the animation.">
     <div class="demo-area">
       <type-writer-text id="seek-demo">
         This demonstrates the seek functionality. Use the slider below to jump to any position in the text!
       </type-writer-text>
     </div>
-    <div class="slider-control">
-      <label for="seek-slider">Position: <span id="seek-value">0</span>%</label>
-      <input type="range" id="seek-slider" min="0" max="100" step="1" value="0">
-    </div>
+    <slider-control label="Position" control-id="seek-slider" min="0" max="100" step="1" value="0" unit="%"></slider-control>
     <div class="controls">
       <button onclick="document.getElementById('seek-demo').start()">Start</button>
       <button onclick="document.getElementById('seek-demo').pause()">Pause</button>
       <button onclick="document.getElementById('seek-demo').reset()">Reset</button>
     </div>
-  </div>
+  </write-example>
 
   <!-- Example 6: setText Method -->
-  <div class="example">
-    <h3>6. Dynamic Content with setText()</h3>
-    <p>Change the content dynamically using the setText() method.</p>
+  <write-example title="6. Dynamic Content with setText()" description="Change the content dynamically using the setText() method.">
     <div class="demo-area">
       <type-writer-text id="settext-demo" speed="3">
         This is the initial text.
@@ -331,12 +348,10 @@
       <button onclick="document.getElementById('settext-demo').start()">Start</button>
       <button onclick="document.getElementById('settext-demo').reset()">Reset</button>
     </div>
-  </div>
+  </write-example>
 
   <!-- Example 7: Nested HTML -->
-  <div class="example">
-    <h3>7. Nested HTML Structures</h3>
-    <p>Complex nested HTML is fully supported.</p>
+  <write-example title="7. Nested HTML Structures" description="Complex nested HTML is fully supported.">
     <div class="demo-area">
       <type-writer-text id="nested-demo" speed="2">
         <p>This contains <strong>nested <em>formatting</em> tags</strong>.</p>
@@ -350,12 +365,10 @@
       <button onclick="document.getElementById('nested-demo').start()">Start</button>
       <button onclick="document.getElementById('nested-demo').reset()">Reset</button>
     </div>
-  </div>
+  </write-example>
 
   <!-- Example 8: RTL Text Support -->
-  <div class="example">
-    <h3>8. Bidirectional Text (RTL)</h3>
-    <p>Right-to-left text is fully supported.</p>
+  <write-example title="8. Bidirectional Text (RTL)" description="Right-to-left text is fully supported.">
     <div class="demo-area rtl-demo">
       <type-writer-text id="rtl-demo" speed="2" dir="rtl">
         مرحبا بك! هذا نص عربي <strong>بتنسيق</strong> مختلف. يدعم المكون النصوص من اليمين إلى اليسار.
@@ -365,12 +378,10 @@
       <button onclick="document.getElementById('rtl-demo').start()">Start</button>
       <button onclick="document.getElementById('rtl-demo').reset()">Reset</button>
     </div>
-  </div>
+  </write-example>
 
   <!-- Example 9: Event Logging -->
-  <div class="example">
-    <h3>9. Event System</h3>
-    <p>All events: start, pause, resume, complete, reset, progress, seek</p>
+  <write-example title="9. Event System" description="All events: start, pause, resume, complete, reset, progress, seek">
     <div class="demo-area">
       <type-writer-text id="events-demo" speed="3">
         Interact with the controls to see all the events fired by this component!
@@ -385,12 +396,10 @@
       <button onclick="document.getElementById('events-demo').seek(0.5)">Seek 50%</button>
     </div>
     <div class="event-log" id="events-log"></div>
-  </div>
+  </write-example>
 
   <!-- Example 10: Reduced Motion -->
-  <div class="example">
-    <h3>10. Accessibility - Reduced Motion</h3>
-    <p>Respects user's motion preferences when <code>respect-motion-preference</code> attribute is set.</p>
+  <write-example title="10. Accessibility - Reduced Motion" description="Respects user's motion preferences when respect-motion-preference attribute is set.">
     <div class="demo-area">
       <type-writer-text id="motion-demo" speed="2" respect-motion-preference>
         If you have "prefers-reduced-motion" enabled in your system, this text will appear instantly!
@@ -401,20 +410,20 @@
       <button onclick="document.getElementById('motion-demo').reset()">Reset</button>
     </div>
     <p><small>Note: This requires the system setting "Reduce motion" to be enabled.</small></p>
-  </div>
+  </write-example>
 
   <h2>API Reference</h2>
   
-  <div class="example">
-    <h3>Attributes</h3>
+  <write-example title="Attributes">
     <ul>
       <li><code>speed</code> - Animation speed multiplier (default: 1)</li>
       <li><code>min-duration</code> - Minimum animation duration in milliseconds</li>
       <li><code>max-duration</code> - Maximum animation duration in milliseconds</li>
       <li><code>respect-motion-preference</code> - Skip animation if user prefers reduced motion</li>
     </ul>
-    
-    <h3>Methods</h3>
+  </write-example>
+  
+  <write-example title="Methods">
     <ul>
       <li><code>start()</code> - Start the animation from the beginning</li>
       <li><code>pause()</code> - Pause the animation</li>
@@ -424,15 +433,17 @@
       <li><code>seek(position)</code> - Jump to a position (0-1 or character index)</li>
       <li><code>setText(content)</code> - Update the content</li>
     </ul>
-    
-    <h3>Properties</h3>
+  </write-example>
+  
+  <write-example title="Properties">
     <ul>
       <li><code>isPlaying</code> - Boolean indicating if animation is playing</li>
       <li><code>isPaused</code> - Boolean indicating if animation is paused</li>
       <li><code>progress</code> - Current progress (0-1)</li>
     </ul>
-    
-    <h3>Events</h3>
+  </write-example>
+  
+  <write-example title="Events">
     <ul>
       <li><code>start</code> - Fired when animation starts</li>
       <li><code>pause</code> - Fired when animation is paused</li>
@@ -442,12 +453,20 @@
       <li><code>progress</code> - Fired for each character (includes detail: {current, total, progress})</li>
       <li><code>seek</code> - Fired when seeking (includes detail: {position, progress})</li>
     </ul>
-  </div>
+  </write-example>
 
   <script>
+    // Update demo text from textarea
+    function updateDemoText() {
+      const textarea = document.getElementById('demo-textarea');
+      const demo = document.getElementById('interactive-demo');
+      demo.setText(textarea.value);
+      demo.start();
+    }
+    
     // Speed control
     const speedSlider = document.getElementById('speed-slider');
-    const speedValue = document.getElementById('speed-value');
+    const speedValue = document.getElementById('speed-slider-value');
     const speedDemo = document.getElementById('speed-demo');
     
     speedSlider.addEventListener('input', (e) => {
@@ -486,7 +505,7 @@
     
     // Seek control
     const seekSlider = document.getElementById('seek-slider');
-    const seekValue = document.getElementById('seek-value');
+    const seekValue = document.getElementById('seek-slider-value');
     const seekDemo = document.getElementById('seek-demo');
     
     seekSlider.addEventListener('input', (e) => {
