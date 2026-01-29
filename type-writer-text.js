@@ -427,11 +427,14 @@ class WriteExample extends HTMLElement {
     const title = this.getAttribute('title') || '';
     const description = this.getAttribute('description') || '';
     
+    // Capture the original content before modifying innerHTML
+    const originalContent = this.innerHTML;
+    
     this.innerHTML = `
       <div style="margin: 2rem 0; padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
         <h3 style="margin-top: 0; color: #2980b9;">${title}</h3>
         ${description ? `<p>${description}</p>` : ''}
-        ${this.innerHTML}
+        ${originalContent}
       </div>
     `;
   }
@@ -455,7 +458,7 @@ class SliderControl extends HTMLElement {
     
     this.innerHTML = `
       <div style="margin: 1rem 0;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+        <label for="${id}" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
           ${label}: <span id="${id}-value">${value}</span>${unit}
         </label>
         <input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${value}" 
